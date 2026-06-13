@@ -6,53 +6,52 @@ app.use(express.json())
 
 //Task1
 app.get("/",(req,res)=>{
-    res.send("Hello, Express server.");
+    res.send("Express server.");
 })
 
 //Task2
 
-const books = [
-  { id: 1, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', year: 1925 },
-
-  { id: 2, title: 'To Kill a Mockingbird', author: 'Harper Lee', year: 1960 }
-
+const movies = [
+  { id: 1, title: 'Inception', director: 'Christopher Nolan', year: 2010 },
+  { id: 2, title: 'The Godfather', director: 'Francis Ford Coppola', year: 1972 }
 ];
 
-app.post("/books",(req,res)=>{
-    const newBook = req.body;
-    if(!newBook.title || !newBook.author|| !newBook.year){
-      res.status(400).json({error: "title,author,year are required"});
+app.post("/movies",(req,res)=>{
+    const newMovie = req.body;
+    if(!newMovie.title || !newMovie.director|| !newMovie.year){
+      res.status(400).json({error: "title,director,year are required"});
     }else{
-        books.push(newBook)
-        res.status(201).json({message: "Book added Successfully.",book:newBook});
+        movies.push(newMovie)
+        res.status(201).json({message: "Movie added Successfully.",movie:newMovie});
 
     }
 });
 
 //Task3
-app.get("/books",(req,res)=>{
-    res.send(books);
+app.get("/movies",(req,res)=>{
+    res.send(movies);
 });
 
 //Task4
-const todos = [
-  { id: 1, title: 'Water the plants', day: 'Saturday' },
+const items = [
+ { id: 1, itemName: 'Spoon', color: 'Silver', quantity: 8},
+ { id: 2, itemName: 'Fork', color: 'Silver', quantity: 8 }
 ];
 
-app.post("/todos",(req,res)=>{
-    const newTodo = req.body;
+app.post("/items",(req,res)=>{
+    const newItem = req.body;
 
-    if(!newTodo.title||!newTodo.day){
-        res.status(400).json({error: "title,day are required"});
+    if(!newItem.itemName||!newItem.color||!newItem.quantity){
+        res.status(400).json({error: "itemName,color,quantity are required"});
     }else{
-       todos.push(newTodo) 
-       res.status(201).json({message: "Todo added Successfully.",todo:newTodo});
+       items.push(newItem) 
+       res.status(201).json({message: "Item added Successfully.",item:newItem});
     }
 });
 
 //Task5
-app.get("/todos",(req,res)=>{
-    res.send(todos);
+app.get("/items",(req,res)=>{
+    res.send(items);
 });
 
 
