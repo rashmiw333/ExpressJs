@@ -3,9 +3,13 @@ const app = express();
 
 app.use(express.json())
 
-const cars =[
-    {id:1,make:"Toyota",model:"camry",year:2022}
+const cars = [
+  { id: 1, make: "Toyota", model: "Camry", year: 2022 },
+  { id: 2, make: "Honda", model: "Civic", year: 2023 },
+  { id: 3, make: "Ford", model: "Mustang", year: 2021 },
+  { id: 4, make: "Chevrolet", model: "Malibu", year: 2022 },
 ]
+
 
 app.get("/",(req,res)=>{
     res.send("hello,Express");
@@ -23,8 +27,24 @@ app.post("/cars",(req,res)=>{
 });
 app.get("/cars",(req,res)=>{
     res.send(cars);
-})
+});
+
+app.delete("/cars/:id",(req,res)=>{
+    const carId = req.params.id
+    console.log(carId);
+    const index = cars.findIndex(car=>car.id == carId);
+    console.log(index);
+
+    if(index === -1){
+       return res.status(404).json({error: 'Car Not Found'});
+    } else{
+        cars.splice(index,1)
+        res.status(200).json({message:"Car deleted Successfully."})
+    }
+}
+)
+
 const PORT= 3000
 app.listen(PORT,()=>{
-    console.log(`Sefver running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 })
