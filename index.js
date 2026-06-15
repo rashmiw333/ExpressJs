@@ -3,78 +3,75 @@ const app = express();
 
 app.use(express.json())
 
-const cars = [
-  { id: 1, make: "Toyota", model: "Camry", year: 2022 },
-  { id: 2, make: "Honda", model: "Civic", year: 2023 },
-  { id: 3, make: "Ford", model: "Mustang", year: 2021 },
-  { id: 4, make: "Chevrolet", model: "Malibu", year: 2022 },
-  { id: 5, make: "Tesla", model: "Model 3", year: 2023 },
-  { id: 6, make: "Nissan", model: "Altima", year: 2022 },
-  { id: 7, make: "BMW", model: "X5", year: 2023 },
-  { id: 8, make: "Mercedes-Benz", model: "C-Class", year: 2021 },
-  { id: 9, make: "Audi", model: "A4", year: 2022 },
-  { id: 10, make: "Lexus", model: "RX", year: 2023 },
-  { id: 11, make: "Hyundai", model: "Tucson", year: 2021 },
-  { id: 12, make: "Kia", model: "Seltos", year: 2022 },
-  { id: 13, make: "Mazda", model: "CX-5", year: 2023 },
-  { id: 14, make: "Subaru", model: "Outback", year: 2021 },
-  { id: 15, make: "Volkswagen", model: "Golf", year: 2022 }
-];
-
-
-
+//Task1
 app.get("/",(req,res)=>{
-    res.send("hello,Express");
+    res.send("Hello, From Express Server.");
 })
 
-app.post("/cars",(req,res)=>{
-    const newCar = req.body;
-    if(!newCar.make || !newCar.model|| !newCar.year){
-        res.status(400).json({error: "make,model,year are required"});
+//Task2
+const books = [
+  { id: 1, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', year: 1925 },
+  { id: 2, title: 'To Kill a Mockingbird', author: 'Harper Lee', year: 1960 },
+  { id: 3, title: '1984', author: 'George Orwell', year: 1949 }
+];
+
+app.post("/books/:id",(req,res)=>{
+    const bookId = parseInt(req.params.id)
+    const updatedBookData = req.body
+
+    const bookToupdate = books.find(book => book.id === bookId);
+    if(!bookToupdate){
+        res.status(404).json({error:"Book not found."})
     }else{
-        cars.push(newCar)
-        res.status(201).json({message: "Car added Successfully.",car:newCar});
-
-    }
-});
-app.get("/cars",(req,res)=>{
-    res.send(cars);
-});
-
-
-app.post("/cars/:id",(req,res)=>{
-    const carId = parseInt(req.params.id)
-    const updatedCarData = req.body
-
-    const carToupdate = cars.find(car => car.id === carId);
-    if(!carToupdate){
-        res.status(404).json({error:"Car not found."})
-    }else{
-        if(!updatedCarData.make || !updatedCarData.model || !updatedCarData.year){
-            res.status(400).json({error: "make,model and year are required."})
+        if(!updatedBookData.title || !updatedBookData.author || !updatedBookData.year){
+            res.status(400).json({error: "title,author and year are required."})
         }else{
-        Object.assign(carToupdate,updatedCarData);
-        res.status(200).json({message:"Car data updated Successfully.",
-            car:carToupdate})
+        Object.assign(bookToupdate,updatedBookData);
+        res.status(200).json({message:"Book data updated Successfully.",
+            book:bookToupdate})
         }
         
     }
 });
 
-app.delete("/cars/:id",(req,res)=>{
-    const carId = req.params.id
-    console.log(carId);
-    const index = cars.findIndex(car=>car.id == carId);
-    console.log(index);
+//Task 3
+app.get("/books",(req,res)=>{
+    res.send(books);
+});
 
-    if(index === -1){
-       return res.status(404).json({error: 'Car Not Found'});
-    } else{
-        cars.splice(index,1)
-        res.status(200).json({message:"Car deleted Successfully."})
+//Task4
+const todos = [
+  { id: 1, title: 'Water the plants', day: 'Saturday' },
+  { id: 2, title: 'Go for a walk', day: 'Sunday' }
+];
+
+app.post("/todos/:id",(req,res)=>{
+    const todoId = parseInt(req.params.id)
+    const updatedTodoData = req.body
+
+    const todoToupdate = todos.find(todo => todo.id === todoId);
+    if(!todoToupdate){
+        res.status(404).json({error:"Todo not found."})
+    }else{
+        if(!updatedTodoData.title || !updatedTodoData.day){
+            res.status(400).json({error: "title,day are required."})
+        }else{
+        Object.assign(todoToupdate,updatedTodoData);
+        res.status(200).json({message:"Todo data updated Successfully.",
+            todfo:todoToupdate})
+        }
+        
     }
-}
-)
+});
+
+
+//Task5
+app.get("/todos",(req,res)=>{
+    res.send(todos);
+});
+
+
+
 
 const PORT= 3000
 app.listen(PORT,()=>{
