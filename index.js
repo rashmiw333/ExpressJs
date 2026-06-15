@@ -6,53 +6,62 @@ app.use(express.json())
 
 //Task1
 app.get("/",(req,res)=>{
-    res.send("Express server.");
+    res.send("Hello, From Express Server.");
 })
 
 //Task2
 
-const movies = [
-  { id: 1, title: 'Inception', director: 'Christopher Nolan', year: 2010 },
-  { id: 2, title: 'The Godfather', director: 'Francis Ford Coppola', year: 1972 }
+const books = [
+  { id: 1, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', year: 1925 },
+  { id: 2, title: 'To Kill a Mockingbird', author: 'Harper Lee', year: 1960 },
+  { id: 3, title: '1984', author: 'George Orwell', year: 1949 }
 ];
 
-app.post("/movies",(req,res)=>{
-    const newMovie = req.body;
-    if(!newMovie.title || !newMovie.director|| !newMovie.year){
-      res.status(400).json({error: "title,director,year are required"});
-    }else{
-        movies.push(newMovie)
-        res.status(201).json({message: "Movie added Successfully.",movie:newMovie});
+app.delete("/books/:id",(req,res)=>{
+    const bookId = req.params.id
+    console.log(bookId);
+    const index = books.findIndex(book=>book.id == bookId);
+    console.log(index);
 
+    if(index === -1){
+       return res.status(404).json({error: 'Book Not Found'});
+    } else{
+        books.splice(index,1)
+        res.status(200).json({message:"Book deleted Successfully."});
     }
-});
+})
 
-//Task3
-app.get("/movies",(req,res)=>{
-    res.send(movies);
+//Task 3
+app.get("/books",(req,res)=>{
+    res.send(books);
 });
 
 //Task4
-const items = [
- { id: 1, itemName: 'Spoon', color: 'Silver', quantity: 8},
- { id: 2, itemName: 'Fork', color: 'Silver', quantity: 8 }
+const todos = [
+  { id: 1, title: 'Water the plants', day: 'Saturday' },
+  { id: 2, title: 'Go for a walk', day: 'Sunday' }
 ];
 
-app.post("/items",(req,res)=>{
-    const newItem = req.body;
 
-    if(!newItem.itemName||!newItem.color||!newItem.quantity){
-        res.status(400).json({error: "itemName,color,quantity are required"});
-    }else{
-       items.push(newItem) 
-       res.status(201).json({message: "Item added Successfully.",item:newItem});
+app.delete("/todos/:id",(req,res)=>{
+    const todoId = req.params.id
+    console.log(todoId);
+    const index = todos.findIndex(todo=>todo.id == todoId);
+    console.log(index);
+
+    if(index === -1){
+       return res.status(404).json({error: 'todo Not Found'});
+    } else{
+        todos.splice(index,1)
+        res.status(200).json({message:"Todo deleted Successfully."});
     }
-});
+})
 
 //Task5
-app.get("/items",(req,res)=>{
-    res.send(items);
+app.get("/todos",(req,res)=>{
+    res.send(todos);
 });
+
 
 
 const PORT= 3000
