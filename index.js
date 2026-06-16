@@ -5,73 +5,70 @@ app.use(express.json())
 
 //Task1
 app.get("/",(req,res)=>{
-    res.send("Hello, From Express Server.");
-})
+    res.send("Express server.");
+});
 
 //Task2
-const books = [
-  { id: 1, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', year: 1925 },
-  { id: 2, title: 'To Kill a Mockingbird', author: 'Harper Lee', year: 1960 },
-  { id: 3, title: '1984', author: 'George Orwell', year: 1949 }
+const movies = [
+  { id: 1, title: 'Inception', director: 'Christopher Nolan', year: 2010 },
+  { id: 2, title: 'The Godfather', director: 'Francis Ford Coppola', year: 1972 },
+  { id: 3, title: 'The Shawshank Redemption', director: 'Frank Darabont', year: 1994 }
 ];
 
-app.post("/books/:id",(req,res)=>{
-    const bookId = parseInt(req.params.id)
-    const updatedBookData = req.body
+app.post("/movies/:id",(req,res)=>{
+    const movieId = parseInt(req.params.id)
+    const updatedMovieData = req.body
 
-    const bookToupdate = books.find(book => book.id === bookId);
-    if(!bookToupdate){
-        res.status(404).json({error:"Book not found."})
+    const movieToUpdate = movies.find(movie => movie.id === movieId);
+    if(!movieToUpdate){
+        res.status(404).json({error:"Todo not found."})
     }else{
-        if(!updatedBookData.title || !updatedBookData.author || !updatedBookData.year){
-            res.status(400).json({error: "title,author and year are required."})
+        if(!updatedMovieData.title || !updatedMovieData.director || !updatedMovieData.year){
+            res.status(400).json({error: "title,director,year are required."})
         }else{
-        Object.assign(bookToupdate,updatedBookData);
-        res.status(200).json({message:"Book data updated Successfully.",
-            book:bookToupdate})
+        Object.assign(movieToUpdate,updatedMovieData);
+        res.status(200).json({message:"Movie data updated Successfully.",
+            movie:movieToUpdate})
         }
         
     }
 });
 
-//Task 3
-app.get("/books",(req,res)=>{
-    res.send(books);
+
+//Task3
+app.get("/movies",(req,res)=>{
+    res.send(movies);
 });
 
 //Task4
-const todos = [
-  { id: 1, title: 'Water the plants', day: 'Saturday' },
-  { id: 2, title: 'Go for a walk', day: 'Sunday' }
+const items = [
+  { id: 1, itemName: 'Spoon', color: 'Silver', quantity: 8},
+  { id: 2, itemName: 'Fork', color: 'Silver', quantity: 8 },
+  { id: 3, itemName: 'Plate', color: 'Off-White', quantity: 6 }
 ];
 
-app.post("/todos/:id",(req,res)=>{
-    const todoId = parseInt(req.params.id)
-    const updatedTodoData = req.body
+app.post("/items/:id",(req,res)=>{
+    const itemId = parseInt(req.params.id);
+    const updatedItemData = req.body
 
-    const todoToupdate = todos.find(todo => todo.id === todoId);
-    if(!todoToupdate){
-        res.status(404).json({error:"Todo not found."})
+    const itemToUpdate = items.find(item => item.id === itemId);
+    if(!itemToUpdate){
+        res.status(404).json({error:"Item not found."})
     }else{
-        if(!updatedTodoData.title || !updatedTodoData.day){
-            res.status(400).json({error: "title,day are required."})
+        if(!updatedItemData.itemName || !updatedItemData.color || !updatedItemData.quantity){
+            res.status(400).json({error: "itemName,color,quantity are required."})
         }else{
-        Object.assign(todoToupdate,updatedTodoData);
-        res.status(200).json({message:"Todo data updated Successfully.",
-            todfo:todoToupdate})
+        Object.assign(itemToUpdate,updatedItemData);
+        res.status(200).json({message:"Item data updated Successfully.",
+            item:itemToUpdate})
         }
         
     }
 });
 
-
-//Task5
-app.get("/todos",(req,res)=>{
-    res.send(todos);
+app.get("/items",(req,res)=>{
+    res.send(items);
 });
-
-
-
 
 const PORT= 3000
 app.listen(PORT,()=>{
