@@ -21,7 +21,7 @@ app.post("/movies/:id",(req,res)=>{
 
     const movieToUpdate = movies.find(movie => movie.id === movieId);
     if(!movieToUpdate){
-        res.status(404).json({error:"Todo not found."})
+        res.status(404).json({error:"Movie not found."})
     }else{
         if(!updatedMovieData.title || !updatedMovieData.director || !updatedMovieData.year){
             res.status(400).json({error: "title,director,year are required."})
