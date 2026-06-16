@@ -41,7 +41,7 @@ app.delete("/albums/:id",(req,res)=>{
     if(index === -1){
        return res.status(404).json({error: 'Album Not Found'});
     } else{
-        items.splice(index,1)
+        albums.splice(index,1)
         res.status(200).json({message:"Album deleted Successfully."});
     }
 })
